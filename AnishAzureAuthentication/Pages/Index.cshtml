@@ -4,6 +4,15 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<div class="text-center">
+    <h1 class="display-4">Displaying Access Token</h1>
+    @Model.accessToken
+</div>
+
+<div class="text-center">
+    <h1 class="display-4">Displaying Contents of the file</h1>
+    @Model.blobContent
+</div>
 
 <div class="text-center">
     <h1 class="display-4">Displaying all the claims</h1>
