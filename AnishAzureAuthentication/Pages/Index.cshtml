@@ -4,6 +4,12 @@
 @{
     ViewData["Title"] = "Home page";
 }
+
+<div class="text-center">
+    <h1 class="display-4">Displaying the Products</h1>
+    @Model.content
+</div>
+
 <div class="text-center">
     <h1 class="display-4">Displaying Access Token</h1>
     @Model.accessToken

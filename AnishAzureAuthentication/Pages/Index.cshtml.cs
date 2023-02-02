@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Identity.Web;
+using System.Net.Http.Headers;
+using System;
 using System.Reflection.Metadata;
 
 namespace AnishAzureAuthentication.Pages
@@ -14,6 +16,7 @@ namespace AnishAzureAuthentication.Pages
         private readonly ITokenAcquisition _tokenAcquisition;
         public string accessToken;
         public string blobContent;
+        public string content;
 
         public IndexModel(ILogger<IndexModel> logger, ITokenAcquisition tokenAcquisition)
         {
@@ -26,17 +29,27 @@ namespace AnishAzureAuthentication.Pages
             //string[] scope = new string[] { "https://storage.azure.com/user_impersonation" };
             //accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(scope);
 
-            TokenAcquisitionTokenCredential tokenAcquisitionTokenCredential = new TokenAcquisitionTokenCredential(_tokenAcquisition);
+            string[] scope = new string[] { "api://de7ba255-6d0b-4ba6-b5d7-c47a542e01a9/Product.ReadWebAPI" };
+            string accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(scope);
 
-            Uri blobUri = new Uri("https://anishstorage786.blob.core.windows.net/anishcontainer/AZ-900.txt");
-            BlobClient blobClient = new BlobClient(blobUri, tokenAcquisitionTokenCredential);
+            string apiURL = "https://azurewebapiauth.azurewebsites.net/api/Products";
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            MemoryStream ms = new MemoryStream();
-            blobClient.DownloadTo(ms);
-            ms.Position = 0;
+            HttpResponseMessage responseMessage = await client.GetAsync(apiURL);
+            content = await responseMessage.Content.ReadAsStringAsync();
 
-            StreamReader sr = new StreamReader(ms);
-            blobContent = sr.ReadToEnd();
+            //TokenAcquisitionTokenCredential tokenAcquisitionTokenCredential = new TokenAcquisitionTokenCredential(_tokenAcquisition);
+
+            //Uri blobUri = new Uri("https://anishstorage786.blob.core.windows.net/anishcontainer/AZ-900.txt");
+            //BlobClient blobClient = new BlobClient(blobUri, tokenAcquisitionTokenCredential);
+
+            //MemoryStream ms = new MemoryStream();
+            //blobClient.DownloadTo(ms);
+            //ms.Position = 0;
+
+            //StreamReader sr = new StreamReader(ms);
+            //blobContent = sr.ReadToEnd();
         }
     }
 }
