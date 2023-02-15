@@ -22,7 +22,7 @@ builder.Services.AddRazorPages();
 
 //builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd");
 
-string[] scope = new string[] { "api://de7ba255-6d0b-4ba6-b5d7-c47a542e01a9/Product.ReadWebAPI" };
+string[] scope = new string[] { "api://de7ba255-6d0b-4ba6-b5d7-c47a542e01a9/Inventory.ReadWebAPI" , "api://de7ba255-6d0b-4ba6-b5d7-c47a542e01a9/Inventory.WriteWebAPI" };
 builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd")
     .EnableTokenAcquisitionToCallDownstreamApi(scope)
     .AddInMemoryTokenCaches();
